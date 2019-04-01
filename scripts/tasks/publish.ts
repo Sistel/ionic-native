@@ -33,13 +33,13 @@ const MIN_CORE_VERSION = '^5.1.0';
 const RXJS_VERSION = '^6.3.0';
 
 const PLUGIN_PEER_DEPENDENCIES = {
-  '@ionic-native/core': MIN_CORE_VERSION,
+  '@ionic-native-sistel/core': MIN_CORE_VERSION,
   rxjs: RXJS_VERSION
 };
 
 function getPackageJsonContent(name: string, peerDependencies = {}, dependencies = {}) {
   return merge(PACKAGE_JSON_BASE, {
-    name: '@ionic-native/' + name,
+    name: '@ionic-native-sistel/' + name,
     dependencies,
     peerDependencies,
     version: VERSION
@@ -53,7 +53,7 @@ function writePackageJson(data: any, dir: string) {
 }
 
 function prepare() {
-  // write @ionic-native/core package.json
+  // write @ionic-native-sistel/core package.json
   writePackageJson(
     getPackageJsonContent('core', { rxjs: RXJS_VERSION }, { '@types/cordova': 'latest' }),
     path.resolve(DIST, 'core')
