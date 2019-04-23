@@ -144,12 +144,16 @@ function wrapObservable(pluginObj: any, methodName: string, args: any[], opts: a
 /**
  * Wrap the event with an observable
  * @private
- * @param event event name
+ * @param event even name
  * @param element The element to attach the event listener to
  * @returns {Observable}
  */
 function wrapEventObservable(event: string, element: any): Observable<any> {
-  element = (typeof window !== 'undefined' && element) ? get(window, element) : element || typeof window !== 'undefined' || {};
+  if (typeof window !== 'undefined') {
+    element = element && typeof window !== 'undefined' ? get(window, element) : window;
+  } else {
+    element = element || {};
+  }
   return fromEvent(element, event);
 }
 
