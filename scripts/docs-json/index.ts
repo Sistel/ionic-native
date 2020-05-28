@@ -1,6 +1,7 @@
 import * as fs from 'fs-extra';
-import { Application } from 'typedoc';
 import { basename, dirname, resolve } from 'path';
+import { Application } from 'typedoc';
+import TypeDoc = require('typedoc');
 import { runInNewContext } from 'vm';
 
 interface Plugin {
@@ -10,6 +11,7 @@ interface Plugin {
   platforms: string[];
   usage: string;
   repo: string;
+  installVariables: string[];
   cordovaPlugin: {
     name: string;
   };
@@ -18,10 +20,14 @@ interface Plugin {
 const rootDir = resolve(__dirname, '../..');
 const typedocTmp = resolve(__dirname, 'typedoc.tmp.json');
 const pluginsDir = resolve(rootDir, 'src/@ionic-native/plugins');
-const typedoc = new Application({
+const typedoc = new Application();
+
+typedoc.options.addReader(new TypeDoc.TSConfigReader());
+typedoc.options.addReader(new TypeDoc.TypeDocReader());
+
+typedoc.bootstrap({
   mode: 'modules',
-  tsconfig: resolve(rootDir, 'tsconfig.json'),
-  ignoreCompilerErrors: true
+  ignoreCompilerErrors: true,
 });
 
 run(pluginsDir);
@@ -31,7 +37,7 @@ async function run(pluginsDir: string) {
   const modules = typedocData.children.filter(isModule);
   const plugins = modules.filter(hasPlugin).map(processPlugin);
   await fs.outputJson(resolve(__dirname, 'plugins.json'), plugins, {
-    spaces: 2
+    spaces: 2,
   });
 }
 
@@ -56,9 +62,10 @@ function processPlugin(pluginModule): Plugin {
     usage,
     platforms: decorator.platforms,
     repo: decorator.repo,
+    installVariables: decorator.installVariables,
     cordovaPlugin: {
-      name: decorator.plugin
-    }
+      name: decorator.plugin,
+    },
   };
 }
 
@@ -83,17 +90,16 @@ const getTag = (child: any, tagName: string): string => {
   }
 };
 
-const isModule = (child: any): boolean =>
-  child.kind === 1;
+const isModule = (child: any): boolean => child.kind === 1;
 
-const isClass = (child: any): boolean =>
-  child.kind === 128;
+const isClass = (child: any): boolean => child.kind === 128;
 
 const isPlugin = (child: any): boolean =>
-  isClass(child) && hasTags(child) && Array.isArray(child.decorators) && child.decorators.some(d => d.name === 'Plugin');
+  isClass(child) &&
+  hasTags(child) &&
+  Array.isArray(child.decorators) &&
+  child.decorators.some(d => d.name === 'Plugin');
 
-const hasPlugin = (child: any): boolean =>
-  child.children.some(isPlugin);
+const hasPlugin = (child: any): boolean => child.children.some(isPlugin);
 
-const hasTags = (child: any): boolean =>
-  child.comment && Array.isArray(child.comment.tags);
+const hasTags = (child: any): boolean => child.comment && Array.isArray(child.comment.tags);
