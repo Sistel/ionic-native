@@ -84,4 +84,13 @@ export class BatteryStatus extends IonicNativePlugin {
   onCritical(): Observable<BatteryStatusResponse> {
     return;
   }
+
+  /**
+   * Checks if device is charging.
+   * @returns {Promise<boolean>}
+   */
+  @Cordova({ platforms: ['Android'] })
+  isCharging(): Promise<boolean> {
+    return;
+  }
 }
