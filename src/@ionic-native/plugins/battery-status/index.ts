@@ -2,6 +2,14 @@ import { Injectable } from '@angular/core';
 import { Cordova, IonicNativePlugin, Plugin } from '@ionic-native/core';
 import { Observable } from 'rxjs';
 
+export enum BatteryStatusEnum {
+  Unknown = 1,
+  Charging = 2,
+  Discharging = 3,
+  NotCharging = 4,
+  Full = 5,
+}
+
 export interface BatteryStatusResponse {
   /**
    * The battery charge percentage
@@ -14,6 +22,22 @@ export interface BatteryStatusResponse {
   isPlugged: boolean;
 }
 
+export interface BatteryStatusData {
+  /**
+   * The battery charge percentage
+   */
+  level: number;
+
+  /**
+   * A boolean that indicates whether the device is plugged in
+   */
+  isPlugged: boolean;
+
+  /**
+   * A enum that indicates the status o f the battery, see BatteryStatusEnum
+   */
+  status: BatteryStatusEnum;
+}
 /**
  * @name Battery Status
  * @description
@@ -91,6 +115,15 @@ export class BatteryStatus extends IonicNativePlugin {
    */
   @Cordova({ platforms: ['Android'] })
   isCharging(): Promise<boolean> {
+    return;
+  }
+
+  /**
+   * Get the data battery info
+   * @returns {Promise<BatteryStatusData>}
+   */
+  @Cordova({ platforms: ['Android'] })
+  getDataBatteryInfo(): Promise<BatteryStatusData> {
     return;
   }
 }
