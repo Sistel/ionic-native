@@ -65,14 +65,14 @@ export interface BatteryStatusData {
  * BatteryStatusResponse
  */
 @Plugin({
-  pluginName: 'BatteryStatus',
-  plugin: 'cordova-plugin-battery-status',
-  pluginRef: 'navigator.battery',
+  pluginName: 'BatteryNotification',
+  plugin: 'cordova-plugin-battery-notification',
+  pluginRef: 'navigator.batterynotification',
   repo: 'https://github.com/apache/cordova-plugin-battery-status',
   platforms: ['iOS', 'Android', 'Windows', 'Browser'],
 })
 @Injectable()
-export class BatteryStatus extends IonicNativePlugin {
+export class BatteryNotification extends IonicNativePlugin {
   /**
    * Watch the change in battery level
    * @returns {Observable<BatteryStatusResponse>} Returns an observable that pushes a status object
