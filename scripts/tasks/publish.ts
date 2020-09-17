@@ -11,7 +11,7 @@ import { Logger } from '../logger';
 // tslint:disable-next-line:no-var-requires
 const MAIN_PACKAGE_JSON = require('../../package.json');
 // const VERSION = MAIN_PACKAGE_JSON.version;
-const VERSION = '5.26.3';
+const VERSION = '5.26.6';
 const FLAGS = '--access public';
 
 const PACKAGE_JSON_BASE = {
@@ -58,15 +58,16 @@ function writeNGXPackageJson(data: any, dir: string) {
 }
 function prepare() {
   // write @ionic-native-sistel/core package.json
-  /* writePackageJson(
+  /*
+  writePackageJson(
     getPackageJsonContent('core', { rxjs: RXJS_VERSION }, { '@types/cordova': 'latest' }),
     path.resolve(DIST, 'core')
-  ); */
+  );*/
 
   // write plugin package.json files
   PLUGIN_PATHS.forEach((pluginPath: string) => {
     const pluginName = pluginPath.split(/[\/\\]+/).slice(-2)[0];
-    if (pluginName === 'battery-status') {
+    if (pluginName === 'battery-notification') {
       const packageJsonContents = getPackageJsonContent(pluginName, PLUGIN_PEER_DEPENDENCIES);
       const dir = path.resolve(DIST, 'plugins', pluginName);
       const ngxDir = path.join(dir, 'ngx');

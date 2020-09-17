@@ -45,15 +45,15 @@ export interface BatteryStatusData {
  *
  * @usage
  * ```typescript
- * import { BatteryStatus } from '@ionic-native/battery-status/ngx';
+ * import { BatteryNotification } from '@ionic-native/battery-notification/ngx';
  *
- * constructor(private batteryStatus: BatteryStatus) { }
+ * constructor(private batteryNotification: BatteryNotification) { }
  *
  * ...
  *
  *
  * // watch change in battery status
- * const subscription = this.batteryStatus.onChange().subscribe(status => {
+ * const subscription = this.batteryNotification.onChange().subscribe(status => {
  *    console.log(status.level, status.isPlugged);
  * });
  *
@@ -79,7 +79,7 @@ export class BatteryNotification extends IonicNativePlugin {
    */
   @Cordova({
     eventObservable: true,
-    event: 'batterystatus',
+    event: 'batterynotification',
   })
   onChange(): Observable<BatteryStatusResponse> {
     return;
@@ -100,6 +100,24 @@ export class BatteryNotification extends IonicNativePlugin {
    */
   @Cordova({ platforms: ['Android'] })
   getDataBatteryInfo(): Promise<BatteryStatusData> {
+    return;
+  }
+
+  /**
+   * Start battery service
+   * @returns void
+   */
+  @Cordova({ platforms: ['Android'] })
+  startService(minLevel: number, message: string): void {
+    return;
+  }
+
+  /**
+   * Stop battery service
+   * @returns void
+   */
+  @Cordova({ platforms: ['Android'] })
+  stopService(): void {
     return;
   }
 }
